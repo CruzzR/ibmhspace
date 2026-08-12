@@ -1,7 +1,7 @@
 # U.Y.U.T — Hilal Prediction & Astronomy Spot Recommendation System
 ## Powered by IBM Watsonx Granite AI · v2.0
 
-> **U.Y.U.T** (*Ulumul Yaqin Untuk Tanda-tanda* — *Signs of Certain Knowledge*) is an AI-powered Islamic astronomy web platform combining real-time ephemeris calculations, interactive maps, and IBM Granite narrative intelligence to support Hijri month determination and sky observation across Indonesia.
+> **U.Y.U.T** (Unified Yield for Universal Tracking* — *Signs of Certain Knowledge*) is an AI-powered Islamic astronomy web platform combining real-time ephemeris calculations, interactive maps, and IBM Granite narrative intelligence to support Hijri month determination and sky observation across Indonesia.
 
 ---
 
