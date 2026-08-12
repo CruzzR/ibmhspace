@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>U.Y.U.T — Sistem Prediksi Astronomi</title>
+  <meta name="description" content="Prediksi visibilitas hilal, hujan meteor, ISS transit, dan Milky Way berbasis IBM Granite AI." />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<!-- ── Loading overlay ─────────────────────────────── -->
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <span class="loading-label" id="loading-label">Memuat U.Y.U.T…</span>
+</div>
+
+<!-- ── Drawer backdrops (mobile) ───────────────────── -->
+<div id="sidebar-backdrop"  class="drawer-backdrop" onclick="UyutUI.closeSidebar()"></div>
+<div id="ai-backdrop"       class="drawer-backdrop" onclick="UyutUI.closeAI()"></div>
+
+<!-- ── App shell ───────────────────────────────────── -->
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="header">
+    <button class="icon-btn" id="sidebar-toggle" aria-label="Toggle parameter panel"
+            onclick="UyutUI.toggleSidebar()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="3" y="5"    width="14" height="1.8" rx=".9" fill="currentColor"/>
+        <rect x="3" y="9.1"  width="14" height="1.8" rx=".9" fill="currentColor"/>
+        <rect x="3" y="13.2" width="14" height="1.8" rx=".9" fill="currentColor"/>
+      </svg>
+    </button>
+
+    <!-- Settings button (desktop + mobile) -->
+    <button class="icon-btn" id="settings-btn" aria-label="Pengaturan"
+            onclick="UyutUI.openSettings()">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <circle cx="9" cy="9" r="2.4" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M9 1.5v1.8M9 14.7v1.8M1.5 9h1.8M14.7 9h1.8
+                 M3.61 3.61l1.27 1.27M13.12 13.12l1.27 1.27
+                 M3.61 14.39l1.27-1.27M13.12 4.88l1.27-1.27"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <div class="logo">
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+        <path d="M20 14C20 17.866 16.866 21 13 21C9.134 21 6 17.866 6 14C6 10.134 9.134 7 13 7C10.239 7 8 9.239 8 12C8 15.314 10.686 18 14 18C16.761 18 19 15.761 19 13C19.667 13.29 20 13.64 20 14Z" fill="#c89b3c"/>
+        <circle cx="14" cy="5.5" r="1.2" fill="#c89b3c" opacity=".55"/>
+        <circle cx="21" cy="8.5" r=".9"  fill="#c89b3c" opacity=".4"/>
+        <circle cx="23" cy="15"  r=".7"  fill="#c89b3c" opacity=".3"/>
+        <circle cx="5"  cy="11"  r=".8"  fill="#c89b3c" opacity=".4"/>
+      </svg>
+      <div>
+        <div class="logo-text">U<span>.</span>Y<span>.</span>U<span>.</span>T</div>
+        <div class="tagline hide-xs">Prediksi Astronomi &amp; Rekomendasi Spot</div>
+      </div>
+    </div>
+
+    <div class="hdr-spacer"></div>
+
+    <!-- Target chips (desktop) -->
+    <div id="target-chips" class="target-chips hide-sm">
+      <button class="target-chip active" data-target="hilal"    onclick="UyutUI.setTarget('hilal')">🌙 Hilal</button>
+      <button class="target-chip"        data-target="meteor"   onclick="UyutUI.setTarget('meteor')">☄️ Meteor</button>
+      <button class="target-chip"        data-target="iss"      onclick="UyutUI.setTarget('iss')">🛰️ ISS</button>
+      <button class="target-chip"        data-target="milkyway" onclick="UyutUI.setTarget('milkyway')">🌌 Milky Way</button>
+    </div>
+
+    <div id="health-badge" class="health-badge">
+      <span class="health-dot"></span>
+      <span class="hide-xs">Menghubungkan…</span>
+    </div>
+
+    <div class="ibm-lockup hide-sm">
+      <span class="ibm-badge">IBM</span>
+      <span class="ibm-label">Granite</span>
+    </div>
+
+    <button class="icon-btn" id="ai-toggle" aria-label="Toggle AI assistant"
+            onclick="UyutUI.toggleAI()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 2a8 8 0 1 0 3.48 15.19L17 18l-1.2-3.52A8 8 0 0 0 10 2Z"
+              stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+        <circle cx="7"  cy="10" r="1.1" fill="currentColor"/>
+        <circle cx="10" cy="10" r="1.1" fill="currentColor"/>
+        <circle cx="13" cy="10" r="1.1" fill="currentColor"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- SIDEBAR (left drawer on mobile) -->
+  <aside id="sidebar">
+    <div class="drawer-header show-mobile">
+      <span class="drawer-title">Parameter Observasi</span>
+      <button class="icon-btn" onclick="UyutUI.closeSidebar()" aria-label="Tutup">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Controls -->
+    <div class="sidebar-section">
+      <!-- Target select (mobile) -->
+      <div class="control-group show-mobile-block">
+        <label for="target-select-mobile">Target Pengamatan</label>
+        <select id="target-select-mobile" onchange="UyutUI.setTarget(this.value)">
+          <option value="hilal">🌙 Hilal &amp; Awal Bulan Hijriah</option>
+          <option value="meteor">☄️ Hujan Meteor (Perseids/Geminids)</option>
+          <option value="iss">🛰️ Stasiun Luar Angkasa (ISS Transit)</option>
+          <option value="milkyway">🌌 Astrofotografi Milky Way Core</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="date-input">Tanggal Observasi</label>
+        <input type="date" id="date-input" />
+      </div>
+
+      <!-- Criteria (hilal-only, hidden for other targets) -->
+      <div class="control-group" id="criteria-group">
+        <label for="criteria-select">Kriteria Visibilitas</label>
+        <select id="criteria-select">
+          <option value="mabims_2021">MABIMS 2021 (Default)</option>
+          <option value="wujudul_hilal">Wujudul Hilal</option>
+          <option value="odeh">Kriteria Odeh</option>
+        </select>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" id="load-btn">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0">
+            <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M7 4v3l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          Hitung Prediksi
+        </button>
+        <button class="btn-icon-outline" id="heatmap-btn"
+                title="Toggle heatmap polusi cahaya / Bortle"
+                onclick="UyutUI.toggleHeatmap()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="3"   fill="currentColor" opacity=".4"/>
+            <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.3" opacity=".5"/>
+            <circle cx="8" cy="8" r="7.5" stroke="currentColor" stroke-width="1"   opacity=".25"/>
+          </svg>
+        </button>
+        <button class="btn-icon-outline" id="export-btn"
+                title="Export ringkasan spot (PNG)"
+                onclick="UyutUI.exportReport()" disabled>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M5 8h6M8 5v6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Status + download -->
+    <div class="status-bar-wrap">
+      <span id="status-bar">Memuat data…</span>
+      <button class="btn-download" id="download-btn"
+              title="Unduh laporan .txt" onclick="UyutUI.downloadReport()" disabled>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M7 1v8M4 6.5l3 3 3-3"  stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 11h10"               stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Unduh
+      </button>
+    </div>
+
+    <!-- Target hero banner -->
+    <div id="target-banner" class="target-banner">
+      <img id="target-banner-img" src="" alt="" loading="lazy" />
+      <div class="target-banner-overlay">
+        <span id="target-banner-label">🌙 Hilal &amp; Awal Bulan Hijriah</span>
+      </div>
+    </div>
+
+    <!-- Top 3 Recommended Spots -->
+    <div class="sidebar-section" id="top-spots-section">
+      <h3>⭐ Top 3 Rekomendasi</h3>
+      <div id="top-spots-list">
+        <div class="empty-state">Memuat rekomendasi…</div>
+      </div>
+    </div>
+
+    <!-- All Spots list -->
+    <div class="sidebar-section">
+      <h3>Semua Spot Observasi</h3>
+      <div id="spot-list">
+        <div class="empty-state">Memuat spot…</div>
+      </div>
+    </div>
+
+    <!-- Detail panel -->
+    <div id="detail-panel"></div>
+
+  </aside>
+
+  <!-- MAP -->
+  <main id="map-area">
+    <div id="map"></div>
+    <div id="map-legend">
+      <div class="legend-title" id="legend-title">Visibilitas</div>
+      <div class="legend-row"><div class="legend-dot" style="background:#2ecc8e"></div><span>Baik ≥60</span></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#e8a838"></div><span>Sedang 35–59</span></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#e85858"></div><span>Buruk &lt;35</span></div>
+    </div>
+  </main>
+
+  <!-- AI PANEL -->
+  <aside id="ai-panel">
+    <div class="ai-header">
+      <span class="ai-title">Asisten UYUT</span>
+      <span class="ibm-badge">IBM</span>
+      <span class="ai-model-label">Granite</span>
+      <button class="icon-btn show-mobile" onclick="UyutUI.closeAI()" aria-label="Tutup AI">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <!-- Target context badge in AI panel -->
+    <div id="ai-context-bar" class="ai-context-bar">
+      <span id="ai-target-label">🌙 Hilal</span>
+      <span id="ai-spot-label" style="color:var(--muted);font-size:.68rem">— pilih spot di peta</span>
+    </div>
+    <div id="ai-messages"></div>
+    <div id="ai-input-area">
+      <input type="text" id="ai-input"
+             placeholder="Tanya kondisi pengamatan… (Enter)" autocomplete="off" />
+      <button id="ai-send">Kirim</button>
+    </div>
+  </aside>
+
+</div><!-- /#app -->
+
+<!-- MOBILE STICKY TARGET BAR — fixed below header, only visible on mobile -->
+<div id="mobile-target-bar">
+  <button class="mob-chip active" data-target="hilal"    onclick="UyutUI.setTarget('hilal')">🌙 Hilal</button>
+  <button class="mob-chip"        data-target="meteor"   onclick="UyutUI.setTarget('meteor')">☄️ Meteor</button>
+  <button class="mob-chip"        data-target="iss"      onclick="UyutUI.setTarget('iss')">🛰️ ISS</button>
+  <button class="mob-chip"        data-target="milkyway" onclick="UyutUI.setTarget('milkyway')">🌌 MW</button>
+</div>
+
+<!-- ── Settings Modal ──────────────────────────────── -->
+<div id="settings-backdrop" class="drawer-backdrop" onclick="UyutUI.closeSettings()"></div>
+<div id="settings-modal" role="dialog" aria-modal="true" aria-label="Pengaturan">
+  <div class="settings-header">
+    <span class="settings-title">
+      <svg width="16" height="16" viewBox="0 0 18 18" fill="none" style="vertical-align:-.2rem;margin-right:.4rem">
+        <circle cx="9" cy="9" r="2.4" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M9 1.5v1.8M9 14.7v1.8M1.5 9h1.8M14.7 9h1.8
+                 M3.61 3.61l1.27 1.27M13.12 13.12l1.27 1.27
+                 M3.61 14.39l1.27-1.27M13.12 4.88l1.27-1.27"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>Pengaturan
+    </span>
+    <button class="icon-btn" onclick="UyutUI.closeSettings()" aria-label="Tutup">
+      <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+        <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="settings-body">
+
+    <!-- Heatmap layer -->
+    <div class="setting-row">
+      <div class="setting-info">
+        <span class="setting-label">Heatmap Polusi Cahaya</span>
+        <span class="setting-desc">Tampilkan lingkaran Bortle overlay pada peta</span>
+      </div>
+      <button class="toggle-btn" id="setting-heatmap" role="switch" aria-checked="false"
+              onclick="UyutUI.settingToggleHeatmap(this)">
+        <span class="toggle-knob"></span>
+      </button>
+    </div>
+
+    <!-- Satellite tracking -->
+    <div class="setting-row">
+      <div class="setting-info">
+        <span class="setting-label">Live Satellite Track (ISS)</span>
+        <span class="setting-desc">Refresh posisi ISS setiap 30 detik saat target ISS aktif</span>
+      </div>
+      <button class="toggle-btn" id="setting-sat" role="switch" aria-checked="false"
+              onclick="UyutUI.settingToggleSat(this)">
+        <span class="toggle-knob"></span>
+      </button>
+    </div>
+
+    <!-- Units -->
+    <div class="setting-row">
+      <div class="setting-info">
+        <span class="setting-label">Satuan Jarak</span>
+        <span class="setting-desc">Digunakan pada ekspor laporan dan jarak elevasi</span>
+      </div>
+      <div class="setting-unit-group" id="setting-units">
+        <button class="unit-chip active" data-unit="km"   onclick="UyutUI.settingSetUnits('km',   this)">km</button>
+        <button class="unit-chip"        data-unit="miles" onclick="UyutUI.settingSetUnits('miles', this)">mi</button>
+      </div>
+    </div>
+
+    <!-- Map theme -->
+    <div class="setting-row">
+      <div class="setting-info">
+        <span class="setting-label">Tema Peta</span>
+        <span class="setting-desc">Pilih tile layer default saat aplikasi dibuka</span>
+      </div>
+      <div class="setting-unit-group" id="setting-map-theme">
+        <button class="unit-chip active" data-theme="dark"   onclick="UyutUI.settingSetMapTheme('dark',   this)">Gelap</button>
+        <button class="unit-chip"        data-theme="street" onclick="UyutUI.settingSetMapTheme('street', this)">Street</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="settings-footer">
+    <span class="settings-version">U.Y.U.T v2.0 · IBM Granite AI</span>
+  </div>
+</div>
+
+<!-- Hidden export canvas -->
+<canvas id="export-canvas" style="display:none"></canvas>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="assets/js/visibility-engine.js"></script>
+<script src="assets/js/ibm-assistant.js"></script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>

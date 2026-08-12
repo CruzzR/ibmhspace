@@ -1,0 +1,205 @@
+{
+  "generated_at": "2025-06-01T00:00:00Z",
+  "note": "Data sampel observasi hilal awal Dzulhijjah 1446 H — 12 spot nasional seluruh Indonesia",
+  "entries": [
+    {
+      "date": "2025-05-28",
+      "hijri_month": "Dzulhijjah 1446 H",
+      "ijtimak_utc": "2025-05-27T03:02:00Z",
+      "spots": [
+        {
+          "id": "sabang",
+          "name": "Sabang (Pulau Weh)",
+          "province": "Aceh",
+          "lat":  5.892, "lon":  95.322, "elevation": 30,
+          "light_pollution": "rendah",
+          "hilal": {
+            "elongation": 8.41, "altitude": 5.12, "illumination": 1.05,
+            "age_hours": 22.4, "sunset_utc": "2025-05-28 11:51:02", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": true,  "score": 73.8 },
+            "wujudul_hilal": { "visible": true,  "score": 77.2 },
+            "odeh":          { "visible": true,  "score": 51.4 }
+          }
+        },
+        {
+          "id": "bmkg_mdn",
+          "name": "BMKG Medan",
+          "province": "Sumatera Utara",
+          "lat":  3.560, "lon":  98.675, "elevation": 22,
+          "light_pollution": "sedang",
+          "hilal": {
+            "elongation": 7.95, "altitude": 4.43, "illumination": 0.98,
+            "age_hours": 21.9, "sunset_utc": "2025-05-28 11:44:17", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": true,  "score": 68.1 },
+            "wujudul_hilal": { "visible": true,  "score": 71.5 },
+            "odeh":          { "visible": false, "score": 46.2 }
+          }
+        },
+        {
+          "id": "bukit_batu",
+          "name": "Bukit Batu Besar",
+          "province": "Riau",
+          "lat":  1.117, "lon": 104.052, "elevation": 45,
+          "light_pollution": "rendah",
+          "hilal": {
+            "elongation": 7.68, "altitude": 4.07, "illumination": 0.94,
+            "age_hours": 21.3, "sunset_utc": "2025-05-28 11:30:44", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": true,  "score": 65.9 },
+            "wujudul_hilal": { "visible": true,  "score": 69.3 },
+            "odeh":          { "visible": false, "score": 43.7 }
+          }
+        },
+        {
+          "id": "bosscha",
+          "name": "Observatorium Bosscha",
+          "province": "Jawa Barat",
+          "lat": -6.825, "lon": 107.617, "elevation": 1310,
+          "light_pollution": "sangat rendah",
+          "hilal": {
+            "elongation": 7.21, "altitude": 4.11, "illumination": 0.82,
+            "age_hours": 20.5, "sunset_utc": "2025-05-28 11:17:22", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": true,  "score": 64.2 },
+            "wujudul_hilal": { "visible": true,  "score": 68.9 },
+            "odeh":          { "visible": false, "score": 41.3 }
+          }
+        },
+        {
+          "id": "bmkg_jkt",
+          "name": "BMKG Jakarta",
+          "province": "DKI Jakarta",
+          "lat": -6.172, "lon": 106.836, "elevation": 10,
+          "light_pollution": "tinggi",
+          "hilal": {
+            "elongation": 6.92, "altitude": 3.14, "illumination": 0.76,
+            "age_hours": 20.2, "sunset_utc": "2025-05-28 11:21:05", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": false, "score": 55.1 },
+            "wujudul_hilal": { "visible": true,  "score": 58.6 },
+            "odeh":          { "visible": false, "score": 32.4 }
+          }
+        },
+        {
+          "id": "condrodipo",
+          "name": "Bukit Condrodipo",
+          "province": "Jawa Timur",
+          "lat": -7.137, "lon": 112.433, "elevation": 110,
+          "light_pollution": "rendah",
+          "hilal": {
+            "elongation": 7.82, "altitude": 4.53, "illumination": 0.95,
+            "age_hours": 21.1, "sunset_utc": "2025-05-28 11:04:12", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": true,  "score": 68.4 },
+            "wujudul_hilal": { "visible": true,  "score": 72.1 },
+            "odeh":          { "visible": false, "score": 43.2 }
+          }
+        },
+        {
+          "id": "tanjung_selor",
+          "name": "Tanjung Selor",
+          "province": "Kalimantan Utara",
+          "lat":  2.838, "lon": 117.372, "elevation": 15,
+          "light_pollution": "rendah",
+          "hilal": {
+            "elongation": 8.23, "altitude": 4.87, "illumination": 1.01,
+            "age_hours": 21.8, "sunset_utc": "2025-05-28 10:42:55", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": true,  "score": 71.3 },
+            "wujudul_hilal": { "visible": true,  "score": 75.0 },
+            "odeh":          { "visible": false, "score": 48.8 }
+          }
+        },
+        {
+          "id": "losari",
+          "name": "Pantai Losari",
+          "province": "Sulawesi Selatan",
+          "lat": -5.143, "lon": 119.406, "elevation": 2,
+          "light_pollution": "sedang",
+          "hilal": {
+            "elongation": 8.05, "altitude": 4.61, "illumination": 0.97,
+            "age_hours": 21.4, "sunset_utc": "2025-05-28 10:33:28", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": true,  "score": 69.7 },
+            "wujudul_hilal": { "visible": true,  "score": 73.4 },
+            "odeh":          { "visible": false, "score": 44.8 }
+          }
+        },
+        {
+          "id": "bmkg_mks",
+          "name": "BMKG Makassar",
+          "province": "Sulawesi Selatan",
+          "lat": -5.059, "lon": 119.554, "elevation": 5,
+          "light_pollution": "sedang",
+          "hilal": {
+            "elongation": 7.88, "altitude": 4.39, "illumination": 0.93,
+            "age_hours": 21.2, "sunset_utc": "2025-05-28 10:32:51", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": true,  "score": 67.6 },
+            "wujudul_hilal": { "visible": true,  "score": 71.0 },
+            "odeh":          { "visible": false, "score": 43.9 }
+          }
+        },
+        {
+          "id": "kupang_ntt",
+          "name": "Kupang (NTT)",
+          "province": "Nusa Tenggara Timur",
+          "lat": -10.173, "lon": 123.607, "elevation": 80,
+          "light_pollution": "rendah",
+          "hilal": {
+            "elongation": 8.67, "altitude": 5.38, "illumination": 1.12,
+            "age_hours": 22.1, "sunset_utc": "2025-05-28 10:17:39", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": true,  "score": 76.4 },
+            "wujudul_hilal": { "visible": true,  "score": 79.8 },
+            "odeh":          { "visible": true,  "score": 54.1 }
+          }
+        },
+        {
+          "id": "ambon",
+          "name": "Observasi Ambon",
+          "province": "Maluku",
+          "lat": -3.657, "lon": 128.178, "elevation": 25,
+          "light_pollution": "rendah",
+          "hilal": {
+            "elongation": 8.92, "altitude": 5.61, "illumination": 1.18,
+            "age_hours": 22.6, "sunset_utc": "2025-05-28 10:02:14", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": true,  "score": 79.1 },
+            "wujudul_hilal": { "visible": true,  "score": 82.5 },
+            "odeh":          { "visible": true,  "score": 57.3 }
+          }
+        },
+        {
+          "id": "biak_papua",
+          "name": "Biak (Papua)",
+          "province": "Papua",
+          "lat": -1.191, "lon": 136.106, "elevation": 40,
+          "light_pollution": "sangat rendah",
+          "hilal": {
+            "elongation": 9.34, "altitude": 5.97, "illumination": 1.27,
+            "age_hours": 23.2, "sunset_utc": "2025-05-28 09:43:52", "source": "sample"
+          },
+          "visibility": {
+            "mabims_2021":   { "visible": true,  "score": 83.7 },
+            "wujudul_hilal": { "visible": true,  "score": 87.2 },
+            "odeh":          { "visible": true,  "score": 63.1 }
+          }
+        }
+      ]
+    }
+  ]
+}
